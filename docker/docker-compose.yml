@@ -2,30 +2,32 @@ version: "3.7"
 
 services:
   mongo:
-    image: mongo
-    container_name: mongodb:latest
+    image: mongo:latest
     restart: always
     env_file:
       - var.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
     ports:
       - 27017:27017
 
   back-end:
-    build: .
+    image: node:16-slim
     restart: always
     env_file:
       - var.env
     environment:
       - SERVER_PORT=4000
-      -  
     depends_on:
       - mongo
-    volume:
-      - ../server/dist/js/:/app
-    command: npm run
+    volumes:
+      - ../server/:/app/
+    command: cd app && npm start
 
   front-end:
-    build: ubuntu/apache2:latest
+    image: ubuntu/apache2:latest
     restart: always
     env_file:
       - var.env
@@ -35,6 +37,6 @@ services:
       - "80:80"
     depends_on:
       - back-end
-    volume:
-      - ../client/build/:/var/www/html  
+    volumes:
+      - ../client/build/:/var/www/html
       - ./apache2.conf:/etc/apache2/apache2.conf

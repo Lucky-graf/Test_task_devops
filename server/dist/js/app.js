@@ -14,7 +14,7 @@ app.use((0, cors_1.default)({
     origin: '*'
 }));
 app.use(routes_1.default);
-const uri = `mongodb://process.env.MONGO_INITDB_ROOT_USERNAME:process.env.MONGO_INITDB_ROOT_PASSWORD@127.0.0.1:27017/process.env.MONGO_INITDB_DATABASE?retryWrites=true&w=majority`;
+const uri = `mongodb://process.env.MONGO_INITDB_ROOT_USERNAME:process.env.MONGO_INITDB_ROOT_PASSWORD@mongo:27017/process.env.MONGO_INITDB_DATABASE?retryWrites=true&w=majority`;
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
 mongoose_1.default.set('useFindAndModify', false);
 mongoose_1.default
