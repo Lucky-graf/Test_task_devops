@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 
-const baseUrl: string = 'http://18.191.92.32:4000'
+const baseUrl: string = 'back-end:4000'
 
 export const getTodos = async (): Promise<AxiosResponse<ApiDataType>> => {
   try {

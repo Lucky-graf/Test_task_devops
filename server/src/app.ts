@@ -13,7 +13,7 @@ app.use(cors({
 }));
 app.use(todoRoutes)
 
-const uri: string = `mongodb://root:pass123@127.0.0.1:27017/admin?retryWrites=true&w=majority`
+const uri: string = `mongodb://process.env.MONGO_INITDB_ROOT_USERNAME:process.env.MONGO_INITDB_ROOT_PASSWORD@127.0.0.1:27017/process.env.MONGO_INITDB_DATABASE?retryWrites=true&w=majority`
 const options = { useNewUrlParser: true, useUnifiedTopology: true }
 mongoose.set('useFindAndModify', false)
 

@@ -7,10 +7,6 @@ services:
     restart: always
     env_file:
       - var.env
-    environment:
-            MONGO_INITDB_ROOT_USERNAME: admin
-            MONGO_INITDB_ROOT_PASSWORD: password
-            MONGO_INITDB_DATABASE: base
     ports:
       - 27017:27017
 
@@ -19,16 +15,22 @@ services:
     restart: always
     env_file:
       - var.env
-    ports:
-      - "80:80"
+    environment:
+      - SERVER_PORT=4000
+      -  
     depends_on:
       - mongo
+    volume:
+      - ../server/dist/js/:/app
+    command: npm run
 
   front-end:
     build: ubuntu/apache2:latest
     restart: always
     env_file:
       - var.env
+    environment:
+      - TZ=UTC
     ports:
       - "80:80"
     depends_on:
