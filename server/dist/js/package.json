@@ -5,14 +5,13 @@
   "main": "app.js",
   "scripts": {
     "build": "tsc",
-    "start": "concurrently \"tsc -w\"  \"nodemon --tls-min-v1.0 -r ts-node/register dist/js/app.js\""
+    "start": "concurrently \"nodemon dist/js/app.js\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^16.0.1",
     "env-cmd": "^10.1.0",
     "express": "^4.17.1",
     "mongoose": "^5.9.20"
@@ -23,7 +22,7 @@
     "@types/mongoose": "^5.7.29",
     "@types/node": "^14.0.14",
     "concurrently": "^5.2.0",
-    "nodemon": "^2.0.4",
-    "ts-node": "^10.8.1"
+    "nodemon": "^2.0.4"
   }
 }
+

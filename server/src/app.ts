@@ -2,10 +2,11 @@ import express, { Express } from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import todoRoutes from './routes'
+import {config as configDotenv} from 'dotenv'
 
 const app: Express = express()
 
-const PORT: string | number = process.env.PORT || 4000
+const PORT: string | number = 4000
 
 app.use(express.json())
 app.use(cors({
@@ -13,7 +14,7 @@ app.use(cors({
 }));
 app.use(todoRoutes)
 
-const uri: string = `mongodb://process.env.MONGO_INITDB_ROOT_USERNAME:process.env.MONGO_INITDB_ROOT_PASSWORD@mongo:27017/process.env.MONGO_INITDB_DATABASE?retryWrites=true&w=majority`
+const uri: string = `mongodb://user:pass@mongo:27017/admin?retryWrites=true&w=majority`
 const options = { useNewUrlParser: true, useUnifiedTopology: true }
 mongoose.set('useFindAndModify', false)
 
@@ -21,7 +22,7 @@ mongoose
     .connect(uri, options)
     .then(() =>
         app.listen(PORT, () =>
-            console.log(`Server running on http://localhost:${PORT}`)
+            console.log(`Server running`)
         )
     )
     .catch((error) => {

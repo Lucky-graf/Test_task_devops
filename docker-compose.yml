@@ -1,0 +1,44 @@
+version: "3.7"
+
+services:
+  mongo:
+    image: mongo:4.2
+    restart: always
+    environment:
+     - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
+     - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ./mongod.conf:/etc/mongo/mongod.conf
+      -  mongodata:/data/db
+    ports:
+      - "27017:27017"
+
+  back-end:
+    build: .
+    image: app
+    restart: always
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    depends_on:
+      - mongo
+    working_dir: /app
+    ports:
+      - "4000:4000"
+    entrypoint: npm start
+
+  front-end:
+    image: ubuntu/apache2:latest
+    restart: always
+    environment:
+      - TZ=UTC
+    ports:
+      - "80:80"
+    depends_on:
+      - back-end
+    volumes:
+      - ./client/build/:/var/www/html
+      - ./apache2.conf:/etc/apache2/apache2.conf
+
+volumes:
+  mongodata:
