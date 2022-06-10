@@ -1,8 +1,8 @@
+require('dotenv').config()
 import express, { Express } from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import todoRoutes from './routes'
-import {config as configDotenv} from 'dotenv'
 
 const app: Express = express()
 
@@ -14,7 +14,7 @@ app.use(cors({
 }));
 app.use(todoRoutes)
 
-const uri: string = `mongodb://user:pass@mongo:27017/admin?retryWrites=true&w=majority`
+const uri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@mongo:27017/admin?retryWrites=true&w=majority`
 const options = { useNewUrlParser: true, useUnifiedTopology: true }
 mongoose.set('useFindAndModify', false)
 
