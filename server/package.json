@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "build": "tsc",
-    "start": "concurrently \"tsc -w\"  \"nodemon --tls-min-v1.0 -r ts-node/register dist/js/app.js\""
+    "start": "concurrently \"tsc -w\"  \"nodemon --unhandled-rejections=strict dist/js/app.js\""
   },
   "keywords": [],
   "author": "",

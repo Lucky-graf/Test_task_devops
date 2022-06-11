@@ -1,6 +1,7 @@
+require('dotenv').config();
 import axios, { AxiosResponse } from 'axios'
 
-const baseUrl: string = 'http://3.135.207.216:4000'
+const baseUrl = 'http://process.env.HOST.52:4000'
 
 export const getTodos = async (): Promise<AxiosResponse<ApiDataType>> => {
   try {

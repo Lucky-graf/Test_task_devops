@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+require('dotenv').config();
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
@@ -14,7 +15,7 @@ app.use((0, cors_1.default)({
     origin: '*'
 }));
 app.use(routes_1.default);
-const uri = `mongodb://user:pass@mongo:27017/admin?retryWrites=true&w=majority`;
+const uri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@mongo:27017/admin?retryWrites=true&w=majority`;
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
 mongoose_1.default.set('useFindAndModify', false);
 mongoose_1.default
