@@ -1,8 +1,9 @@
+#!/bin/bash
 bash env_var.sh
 cd client
 npm install
-npm build
+npm audit fix --force
 cd ../server/
 npm install
 cd ..
-docker-compose up -d --build
+#docker-compose up -d --build
