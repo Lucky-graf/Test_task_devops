@@ -1,5 +1,5 @@
-require('dotenv').config();
 import axios, { AxiosResponse } from 'axios'
+require('dotenv').config();
 
 const baseUrl = 'http://${process.env.HOST}:4000'
 
