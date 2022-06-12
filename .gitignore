@@ -6,6 +6,7 @@
 /client/.pnp
 /client/.pnp.js
 /.docker-compose.yml.swp
+/.env
 
 # testing
 /client/coverage
