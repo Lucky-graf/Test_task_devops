@@ -3,7 +3,7 @@
 bash env_var.sh
 cd client
 npm install
-yarn build
+npm run build
 cd ../server/
 npm install
 cd ..
