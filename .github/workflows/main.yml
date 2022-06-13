@@ -58,6 +58,6 @@ jobs:
           server: ${{ secrets.SERVER_IP }}
           ssh_private_key: ${{ secrets.SSH_PRIVET_KEY }}
           local_path: ./*
-          remote_path: /app/
+          remote_path: /home/ubuntu/app/
           args: '-o ConnectTimeout=5'
         
