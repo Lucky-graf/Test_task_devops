@@ -80,7 +80,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          path: client
+          directory: client
           push: true
           tags: bodya1601/todo-front:latest
 
