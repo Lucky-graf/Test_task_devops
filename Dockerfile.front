@@ -2,8 +2,7 @@ FROM ubuntu/apache2:latest
 RUN ls /var/www/ 
 RUN rm -rf /var/www/html/* 
 RUN mkdir /var/www/html/
-COPY /home/runner/work/Test_task_devops/Test_task_devops/client/ /var/www/html/
-COPY ./client/build/ /var/www/html/
+COPY client/build/ /var/www/html/
 RUN ls /var/www/html/
 RUN  rm -rf /etc/apache2/apache2.conf
-COPY ./apache2.conf /etc/apache2/apache2.conf
+COPY apache2.conf /etc/apache2/apache2.conf
