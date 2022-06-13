@@ -53,7 +53,7 @@ jobs:
         uses: actions/checkout@v3    
       - name: Delete useless file
         run: |
-          ls /
+          ls /github/workspace
           rm -rf /Test_task_devops/server /Test_task_devops/README.md /Test_task_devops/set_up.sh 
       - name: SFTP Deploy
         uses: wlixcc/SFTP-Deploy-Action@v1.2.2
@@ -64,8 +64,6 @@ jobs:
           local_path: /Test_task_devops
           remote_path: /home/ubuntu/app/
           args: '-o ConnectTimeout=5'
-      - name: List file
-        run: | 
-          ls /
+
 
         
