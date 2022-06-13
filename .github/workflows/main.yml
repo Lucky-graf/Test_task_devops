@@ -60,5 +60,7 @@ jobs:
           local_path: /home/runner/work/Test_task_devops
           remote_path: /home/ubuntu/app/
           args: '-o ConnectTimeout=5'
+      - name: List useless file
+        run: ls /home/runner/work/
 
         
