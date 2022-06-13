@@ -83,9 +83,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: ./client/
-          #directory: ./client
-          file: ./Dockerfile.txt
+          file: Dockerfile.txt
           push: true
           tags: bodya1601/todo-front:latest
 
