@@ -27,7 +27,7 @@ services:
     entrypoint: npm start
 
   front-end:
-    image: ubuntu/apache2:latest
+    image: bodya1601/todo-front:latest
     restart: always
     environment:
       - TZ=UTC
@@ -35,9 +35,6 @@ services:
       - "80:80"
     depends_on:
       - back-end
-    volumes:
-      - ./client/build/:/var/www/html
-      - ./apache2.conf:/etc/apache2/apache2.conf
 
 volumes:
   mongodata:
