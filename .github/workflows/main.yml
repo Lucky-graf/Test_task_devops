@@ -14,20 +14,16 @@ jobs:
       - uses: actions/checkout@v3
         with:
           files: client
-        if: steps.sync.outcome  == 'success'
       - name: Use Node.js
       - uses: actions/setup-node@v3
         with:
           node-version: 14
-        if: steps.sync.outcome  == 'success'
       - name: Install Dependencies
         run : |
           yarn install
           npm install
-        if: steps.sync.outcome  == 'success'
       - name: Run Testing
         run : npm test --watchAll=false
-        if: steps.sync.outcome  == 'success'
 
 
     
