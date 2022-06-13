@@ -50,7 +50,7 @@ jobs:
         uses: actions/checkout@v3    
       - name: Delete useless file
         run: |
-          ls /github/workspace
+          ls /home/runner/work/Test_task_devops/
           rm -rf /Test_task_devops/server /Test_task_devops/README.md /Test_task_devops/set_up.sh 
       - name: SFTP Deploy
         uses: wlixcc/SFTP-Deploy-Action@v1.2.2
