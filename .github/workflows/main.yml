@@ -95,18 +95,25 @@ jobs:
         
   deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/test'
+    #if: github.ref == 'refs/heads/test'
+    if: ${{ !failure() }}
     needs: build
+    env:
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     steps:
-      - name: SFTP Deploy
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.2
-        with:
-          username: ${{ secrets.USER_NAME }}
-          server: ${{ secrets.SERVER_IP }}
-          ssh_private_key: ${{ secrets.SSH_PRIVET_KEY }}
-          local_path: /github/workspace/*
-          remote_path: /home/ubuntu/app/
-          args: '-o ConnectTimeout=5'
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with: 
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.USER_NAME }}
+        port: 22
+        key: ${{ secrets.SSH_PRIVET_KEY }}
+        envs:  DB_USER, DB_PASSWORD
+        script: 
+          echo "I am $DB_USER"
+    
+    
 
 
         
