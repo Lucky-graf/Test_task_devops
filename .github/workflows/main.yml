@@ -46,7 +46,7 @@ jobs:
     if: ${{ !failure() }}
     needs: build
     steps:
-      - name: Clone reppo
+      - name: Clone reppo GitHub
         uses: actions/checkout@v3    
       - name: Delete useless file
         run: |
