@@ -49,8 +49,9 @@ jobs:
       - name: Clone reppo
         uses: actions/checkout@v3    
       - name: Delete useless file
-        run:
+        run: |
           rm -rf server README.md set_up.sh
+          ls
       - name: SFTP Deploy
         uses: wlixcc/SFTP-Deploy-Action@v1.2.2
         with:
