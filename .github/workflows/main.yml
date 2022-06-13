@@ -1,4 +1,4 @@
-name: CI_CD
+name: CI_CD_second
 on:
   push:
     branches: docker
