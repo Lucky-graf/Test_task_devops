@@ -66,9 +66,11 @@ jobs:
         run : |
           yarn install
           npm install
+          ls
       - name: Run Build App
         run : |
-          npm run build       
+          npm run build  
+          ls /github/workspace/
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
