@@ -49,17 +49,19 @@ jobs:
       - name: Clone reppo GitHub
         uses: actions/checkout@v3    
       - name: Delete useless file
-        run: rm -rf server README.md set_up.sh 
+        run: | 
+          cd $GITHUB_WORKSPACE
+          rm -rf server README.md set_up.sh 
       - name: List file
         run: |
-          ls /home/runner/work/Test_task_devops/
+          ls $GITHUB_WORKSPACE
       - name: SFTP Deploy
         uses: wlixcc/SFTP-Deploy-Action@v1.2.2
         with:
           username: ${{ secrets.USER_NAME }}
           server: ${{ secrets.SERVER_IP }}
           ssh_private_key: ${{ secrets.SSH_PRIVET_KEY }}
-          local_path: /home/runner/work/Test_task_devops/*
+          local_path: $GITHUB_WORKSPACE/*
           remote_path: /home/ubuntu/app/
           args: '-o ConnectTimeout=5'
 
