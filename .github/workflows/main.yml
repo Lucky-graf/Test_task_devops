@@ -1,11 +1,11 @@
 name: CI_CD
 on:
   push:
-    branches: docker
+    branches: [reserve-brench, master]
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./client
