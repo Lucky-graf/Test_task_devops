@@ -45,9 +45,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !failure() }}
     needs: build
-    defaults:
-      run:
-        working-directory: /
     steps:
       - name: Clone reppo GitHub
         uses: actions/checkout@v3    
