@@ -47,18 +47,17 @@ jobs:
     needs: build
     steps:
       - name: Clone reppo
-        uses: actions/checkout@v3      
+        uses: actions/checkout@v3    
+      - name: Delete useless file
+        run:
+          rm -rf server README.md set_up.sh
       - name: SFTP Deploy
         uses: wlixcc/SFTP-Deploy-Action@v1.2.2
         with:
           username: ${{ secrets.USER_NAME }}
           server: ${{ secrets.SERVER_IP }}
           ssh_private_key: ${{ secrets.SSH_PRIVET_KEY }}
-          local_path: |
-            ./*
-            !server
-            !README.md
-            !set_up.sh
+          local_path: ./*
           remote_path: /app/
           args: '-o ConnectTimeout=5'
         
