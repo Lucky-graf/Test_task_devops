@@ -84,6 +84,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
+          context: .
           file: Dockerfile.front
           push: true
           tags: bodya1601/todo-front:latest
