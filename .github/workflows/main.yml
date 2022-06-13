@@ -58,7 +58,7 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           server: ${{ secrets.SERVER_IP }}
           ssh_private_key: ${{ secrets.SSH_PRIVET_KEY }}
-          local_path: /*
+          local_path: ./github/workspace/*
           remote_path: /home/ubuntu/app/
           args: '-o ConnectTimeout=5'
 
