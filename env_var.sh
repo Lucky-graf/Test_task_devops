@@ -1,6 +1,4 @@
 #!/bin/bash
-echo  ${{ secrets.DOCKER_HUB_TOKEN }} >> .env
-echo "" >> .env
 echo "DB_USER = user" > .env
 echo -n "DB_PASSWORD = " >> .env
 date +%s | sha256sum | base64 | head -c 32 >> .env
