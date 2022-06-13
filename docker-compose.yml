@@ -31,7 +31,6 @@ services:
     restart: always
     environment:
       - TZ=UTC
-      - HOST=${REACT_APP_HOST}
     ports:
       - "80:80"
     depends_on:
