@@ -49,7 +49,7 @@ jobs:
       - name: Clone reppo GitHub
         uses: actions/checkout@v3    
       - name: Delete useless file
-        run: rm -rf server README.md set_up.sh 
+        run: rm -rf server README.md set_up.sh Dockerfile
       - name: List file
         run: ls
       - name: SFTP Deploy
