@@ -16,8 +16,9 @@ jobs:
           node-version: 14
       - name: Install Dependencies
         run : |
-          yarn install
+          ls -la
           npm install
+          yarn install
       - name: Run Testing
         run : npm test --watchAll=false
 
