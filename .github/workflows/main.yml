@@ -51,6 +51,7 @@ jobs:
       - name: Delete useless file
         run: |
           rm -rf server README.md set_up.sh
+          cd ..
           ls
       - name: SFTP Deploy
         uses: wlixcc/SFTP-Deploy-Action@v1.2.2
@@ -58,7 +59,7 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           server: ${{ secrets.SERVER_IP }}
           ssh_private_key: ${{ secrets.SSH_PRIVET_KEY }}
-          local_path: ./*
+          local_path: ./Test_task_devops
           remote_path: /home/ubuntu/app/
           args: '-o ConnectTimeout=5'
         
