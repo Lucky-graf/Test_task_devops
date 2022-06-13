@@ -42,6 +42,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
+        file: Dockerfile.back
         push: true
         tags: bodya1601/todo:latest
         
@@ -65,12 +66,9 @@ jobs:
         run : |
           yarn install
           npm install
-        if: ${{ failure() }}
       - name: Run Build App
         run : |
-          npm run build
-        if: ${{ failure() }}
-        
+          npm run build       
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -83,7 +81,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          file: Dockerfile.txt
+          file: Dockerfile.front
           push: true
           tags: bodya1601/todo-front:latest
 
