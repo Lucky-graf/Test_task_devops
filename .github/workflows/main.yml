@@ -57,7 +57,7 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           server: ${{ secrets.SERVER_IP }}
           ssh_private_key: ${{ secrets.SSH_PRIVET_KEY }}
-          local_path: /home/runner/work/Test_task_devops/Test_task_devops
+          local_path: /home/runner/work/Test_task_devops
           remote_path: /home/ubuntu/app/
           args: '-o ConnectTimeout=5'
 
