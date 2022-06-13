@@ -49,6 +49,7 @@ jobs:
         run: echo "hello build"
   deploy:
     runs-on: ubuntu-latest
+    if: ${{ !failure() }}
     needs: build
     steps:
       - name: Print from step build
