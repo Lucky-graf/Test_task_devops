@@ -65,9 +65,12 @@ jobs:
         run : |
           yarn install
           npm install
+        if: ${{ failure() }}
       - name: Run Build App
         run : |
           npm run build
+        if: ${{ failure() }}
+        
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -80,7 +83,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: ./client/
+          context: /github/workspace/client/
           #directory: ./client
           dockerfile: Dockerfile.txt
           push: true
