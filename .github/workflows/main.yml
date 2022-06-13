@@ -69,6 +69,6 @@ jobs:
             SOURCE: "../Test_task_devops/"
             REMOTE_HOST: ${{ secrets.SERVER_IP }}
             REMOTE_USER: ${{ secrets.USER_NAME }}
-            TARGET: /home/${{ secrets.USER_NAME }}/
+            TARGET: "/home/ubuntu/app"
             EXCLUDE: "/dist/, /node_modules/"
         
