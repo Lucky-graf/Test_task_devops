@@ -52,9 +52,6 @@ jobs:
     env: 
       REACT_APP_HOST: ${{ secrets.SERVER_IP }}
     needs: docker
-    defaults:
-      run:
-        working-directory: ./client
     steps:
       - name: Clone reppo
         uses: actions/checkout@v3
@@ -64,13 +61,17 @@ jobs:
           node-version: 14
       - name: Install Dependencies
         run : |
+          ls
+          cd client
+          ls
           yarn install
           npm install
           ls
       - name: Run Build App
         run : |
-          npm run build  
-          ls /github/workspace/
+          cd client
+          npm run build
+          ls
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
