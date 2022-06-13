@@ -56,7 +56,7 @@ jobs:
             !README.md
             !set_up.sh
   deploy:
-    runs-on: ubuntu_aws
+    runs-on: ubuntu-latest
     if: ${{ !failure() }}
     needs: build
     steps:
