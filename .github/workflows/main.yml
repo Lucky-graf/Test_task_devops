@@ -22,7 +22,7 @@ jobs:
           yarn install
       - name: Run Testing
         run : npm test --watchAll=false
-  docker:
+  build:
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -40,27 +40,25 @@ jobs:
       with:
         push: true
         tags: bodya1601/todo:latest
-  build:
-    runs-on: ubuntu-latest
-    if: ${{ !failure() }}
-    needs: docker
-    steps:
-      - name: Clone reppo
-        uses: actions/checkout@v3      
-      - uses: actions/upload-artifact@v3
-        with:
-          name: my-artifact
-          path: |
-            ./*
-            !server
-            !README.md
-            !set_up.sh
+        
   deploy:
     runs-on: ubuntu-latest
     if: ${{ !failure() }}
     needs: build
     steps:
-      - name: Print from step deploy
-        run: echo "hello deploy"
-
-
+      - name: Clone reppo
+        uses: actions/checkout@v3      
+      - name: SFTP Deploy
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.2
+        with:
+          username: ${{ secrets.USER_NAME }}
+          server: ${{ secrets.SERVER_IP }}
+          ssh_private_key: ${{ secrets.SSH_PRIVET_KEY }}
+          local_path: |
+            ./*
+            !server
+            !README.md
+            !set_up.sh
+          remote_path: /app/
+          args: '-o ConnectTimeout=5'
+        
