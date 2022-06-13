@@ -1,10 +1,13 @@
 name: CI_CD
 on:
   push:
-    branches: docker
+    branches: master
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
     steps:
       - name: Clone reppo
         uses: actions/checkout@v3
@@ -13,16 +16,21 @@ jobs:
         with:
           node-version: 14
       - name: Install Dependencies
-        working-directory: ./client
         run : |
-          ls -la
           npm install
-          ls -la
-          yarn version
           yarn install
       - name: Run Testing
-        working-directory: ./client
         run : npm test --watchAll=false
-
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: user/todo-app:latest
+          secrets: |
+            GIT_AUTH_TOKEN=${{ secrets.DOCKER_HUB_TOKEN }}
 
     
