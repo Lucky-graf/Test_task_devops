@@ -45,14 +45,33 @@ jobs:
     if: ${{ !failure() }}
     needs: docker
     steps:
-      - name: Print from step build
-        run: echo "hello build"
+      - name: Clone reppo
+        uses: actions/checkout@v3
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.3.0
+        with:
+          node-version: 14
+      - name: Install Dependencies
+        run : |
+          ls
+          npm install
+          yarn install
+        working-directory: ./client
+        
+      - uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: |
+            ./*
+            !server
+            !README.md
+            !set_up.sh
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu_aws
     if: ${{ !failure() }}
     needs: build
     steps:
-      - name: Print from step build
+      - name: Print from step deploy
         run: echo "hello deploy"
 
 
