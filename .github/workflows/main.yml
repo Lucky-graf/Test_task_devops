@@ -17,8 +17,11 @@ jobs:
         run : |
           ls -la
           npm install
+          ls -la
+          yarn version
           yarn install
       - name: Run Testing
+        working-directory: ./client
         run : npm test --watchAll=false
 
 
