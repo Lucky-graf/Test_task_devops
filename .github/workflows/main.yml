@@ -111,9 +111,9 @@ jobs:
         #key: ${{ secrets.SSH_PUBLIC_KEY }}
         port: 22
         envs:  DB_USER, DB_PASSWORD
-        script: 
-          echo "I am $DB_USER"
-          curl ifconfig.me 
+        script: whoami 
+          #echo "I am $DB_USER"
+          #curl ifconfig.me 
     
     
 
