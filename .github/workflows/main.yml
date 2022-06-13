@@ -108,7 +108,7 @@ jobs:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.USER_NAME }}
         key: ${{ secrets.SSH_PIVATE_KEY }}
-        #key: ${{ secrets.SSH_PUBLIC_KEY }}
+        fingerprint: ${{ secrets.SSH_PUBLIC_KEY }}
         port: 22
         envs:  DB_USER, DB_PASSWORD
         script: whoami 
