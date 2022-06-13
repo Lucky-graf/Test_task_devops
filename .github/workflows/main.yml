@@ -31,6 +31,6 @@ jobs:
           push: true
           tags: bodya1601/todo:latest
           secrets: |
-            GIT_AUTH_TOKEN=${{ secrets.DOCKER_HUB_TOKEN }}
+            GIT_AUTH_TOKEN=${{ secrets.DOCKER_HUB_TOKEN}}
 
     
