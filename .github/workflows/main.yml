@@ -45,6 +45,9 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !failure() }}
     needs: build
+    defaults:
+      run:
+        working-directory: /
     steps:
       - name: Clone reppo GitHub
         uses: actions/checkout@v3    
@@ -57,10 +60,11 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           server: ${{ secrets.SERVER_IP }}
           ssh_private_key: ${{ secrets.SSH_PRIVET_KEY }}
-          local_path: /home/runner/work/Test_task_devops
+          local_path: /Test_task_devops
           remote_path: /home/ubuntu/app/
           args: '-o ConnectTimeout=5'
-      - name: List useless file
-        run: ls /home/runner/work/
+      - name: List file
+        run: | 
+          ls /
 
         
