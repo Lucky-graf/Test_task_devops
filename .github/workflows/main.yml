@@ -124,24 +124,14 @@ jobs:
         
     - name: Executing remote ssh commands using ssh-key
       uses: appleboy/ssh-action@master
-      env:
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       with: 
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.USER_NAME }}
         key: ${{ secrets.SSH_PIVATE_KEY }}
         #fingerprint: ${{ secrets.SSH_PUBLIC_KEY }}
         port: 22
-        envs:  DB_USER, DB_PASSWORD
         script: |
           cd ~/app/
-          echo -n "DB_USER = " > .env
-          ${{ secrets.DB_USER }} >> .env
-          echo "" >> .env
-          echo -n "DB_PASSWORD = " >> .env
-          ${{ secrets.DB_PASSWORD }} >> .env
-          echo "" >> .env
           docker-compose up -d
           #rm -rf .env
     
