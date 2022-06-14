@@ -9,8 +9,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/master'
-    if: github.ref == 'refs/heads/test'
+    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./client
@@ -21,17 +21,17 @@ jobs:
         uses: actions/setup-node@v3.3.0
         with:
           node-version: 14
+          cache: yarn
       - name: Install Dependencies
         run : |
-          npm install
           yarn install
       - name: Run Testing
-        run : npm test --watchAll=false
+        run : yarn test --watchAll=false
         
   build-deploy-back:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/test'
-    if: ${{ !failure() }}
+    #if: ${{ !failure() }}
     needs: test
     steps:
     - name: Clone reppo
@@ -40,10 +40,10 @@ jobs:
       uses: actions/setup-node@v3.3.0
       with:
         node-version: 14
+        cache: npm
     - name: Install Dependencies
       run : |
         cd server
-        yarn install
         npm install
     - name: Run Build App
       run : |
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/test'
     needs: [build-deploy-back]
-    if: ${{ !failure() }}
+    #if: ${{ !failure() }}
     env: 
       REACT_APP_HOST: ${{ secrets.SERVER_IP }}
     steps:
@@ -81,15 +81,15 @@ jobs:
         uses: actions/setup-node@v3.3.0
         with:
           node-version: 14
+          cache: yarn
       - name: Install Dependencies
         run : |
           cd client
           yarn install
-          npm install
       - name: Run Build App
         run : |
           cd client
-          npm run build
+          yarn build
       #Docker
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
