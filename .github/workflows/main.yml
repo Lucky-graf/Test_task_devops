@@ -129,9 +129,11 @@ jobs:
         port: 22
         envs:  DB_USER, DB_PASSWORD
         script: |
-          export DB_USER="$DB_USER"
-          export DB_PASSWORD="$DB_PASSWORD"
+          cd ~/app/
+          export DB_USER=${{ secrets.DB_USER }}
+          export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
           export TE_ST="hello"
+          docker-compose -v
     
 
 
