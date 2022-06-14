@@ -8,8 +8,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    #if: github.ref == 'refs/heads/test'
+    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./client
@@ -44,29 +44,7 @@ jobs:
     steps:
     - name: Clone reppo
       uses: actions/checkout@v3
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v3.3.0
-      with:
-        node-version: 16
-    - name: Get npm cache directory
-      id: npm-cache-dir
-      run: |
-        echo "::set-output name=dir::$(npm config get cache)"
-    - uses: actions/cache@v3
-      id: npm-cache 
-      if: steps.npm-cache.outputs.cache-hit != 'true'
-      with:
-        path: ${{ steps.npm-cache-dir.outputs.dir }}
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-        
-
-    - name: Install Dependencies AND Run Build App
-      run : |
-        cd server
-        npm install
-        npm run build
-        cd ..
+      
     # Docker
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
@@ -102,6 +80,7 @@ jobs:
         uses: actions/setup-node@v3.3.0
         with:
           node-version: 16
+      # tacke cache dependence
       - name: Get yarn cache directory path
         id: build-cache-yarn
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
@@ -114,7 +93,7 @@ jobs:
           key: build-cache-yarn-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
           restore-keys: |
             build-cache-yarn           
-     
+      # install dependence
       - name: Install Dependencies AND Run Build App
         run : |
           cd client
