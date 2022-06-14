@@ -49,19 +49,20 @@ jobs:
       uses: actions/setup-node@v3.3.0
       with:
         node-version: 16
-    - name: Get npm cache directory
-      id: npm-cache-dir
-      run: |
-        echo "::set-output name=dir::$(npm config get cache)"
-    - uses: actions/cache@v3
-      id: npm-cache 
-      if: steps.npm-cache.outputs.cache-hit != 'true'
-      with:
-        path: ${{ steps.npm-cache-dir.outputs.dir }}
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-        
-    - name: Install Dependencies
+#    - name: Get npm cache directory
+#      id: npm-cache-dir
+#      run: |
+#        echo "::set-output name=dir::$(npm config get cache)"
+#    - uses: actions/cache@v3
+#      id: npm-cache 
+#      if: steps.npm-cache.outputs.cache-hit != 'true'
+#      with:
+#        path: ${{ steps.npm-cache-dir.outputs.dir }}
+#        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+#        restore-keys: |
+#          ${{ runner.os }}-node-        
+
+- name: Install Dependencies
       run : |
         cd server
         npm install
@@ -95,39 +96,40 @@ jobs:
     env: 
       DOCKER_BUILDKIT: 0
       COMPOSE_DOCKER_CLI_BUILD: 0
-      #REACT_APP_HOST: ${{ secrets.SERVER_IP }}
+      REACT_APP_HOST: ${{ secrets.SERVER_IP }}
     steps:
       - name: Clone reppo
         uses: actions/checkout@v3
         
         
-      - name: Create .env file
-        uses: ozaytsev86/create-env-file@v1    
-        with:
-          ENV_REACT_APP_HOST: ${{ secrets.SERVER_IP }}
-          file-name: env        
-      - name: Linkid enviroment file
-        run : |
-          cd client
-          ln -s ../env .env
+#      - name: Create .env file
+#        uses: ozaytsev86/create-env-file@v1    
+#        with:
+#          ENV_REACT_APP_HOST: ${{ secrets.SERVER_IP }}
+#          file-name: env        
+#      - name: Linkid enviroment file
+#        run : |
+#          cd client
+#          ln -s ../env .env
           
           
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3.3.0
-        with:
-          node-version: 16
-      - name: Get yarn cache directory path
-        id: build-cache-yarn
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-      - name: Restore yarn cache
-        uses: actions/cache@v2
-        id: yarn-cache 
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        with:
-          path: ${{ steps.build-cache-yarn.outputs.dir }}
-          key: build-cache-yarn-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
-          restore-keys: |
-            build-cache-yarn           
+#      - name: Setup Node.js environment
+#        uses: actions/setup-node@v3.3.0
+#        with:
+#          node-version: 16
+#      - name: Get yarn cache directory path
+#        id: build-cache-yarn
+#        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+#      - name: Restore yarn cache
+#        uses: actions/cache@v2
+#        id: yarn-cache 
+#        if: steps.yarn-cache.outputs.cache-hit != 'true'
+#        with:
+#          path: ${{ steps.build-cache-yarn.outputs.dir }}
+#          key: build-cache-yarn-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
+#          restore-keys: |
+#            build-cache-yarn           
+     
       - name: Install Dependencies
         run : |
           cd client
@@ -160,7 +162,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/test'
-    #if: ${{ !failure() }}
+    if: ${{ !failure() }}
     needs: [build-deploy-back, build-deploy-front]     
     steps:
     - name: Clone reppo GitHub
@@ -194,7 +196,6 @@ jobs:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.USER_NAME }}
         key: ${{ secrets.SSH_PIVATE_KEY }}
-        #fingerprint: ${{ secrets.SSH_PUBLIC_KEY }}
         port: 22
         script: |
           cd ~/app/
