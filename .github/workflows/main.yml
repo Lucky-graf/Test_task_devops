@@ -124,8 +124,9 @@ jobs:
       - name: Install Dependencies
         run : |
           ls -la
-          cp env /client/.env
           cd client
+          ls -la ../
+          cp ../env .env
           yarn install
           npm install
       - name: Run Build App
