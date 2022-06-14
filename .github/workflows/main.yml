@@ -92,7 +92,7 @@ jobs:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/test'
     needs: [build-deploy-back]
-    #if: ${{ !failure() }}
+    if: ${{ !failure() }}
     env: 
       DOCKER_BUILDKIT: 0
       COMPOSE_DOCKER_CLI_BUILD: 0
