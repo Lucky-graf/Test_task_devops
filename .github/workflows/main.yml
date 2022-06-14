@@ -128,7 +128,6 @@ jobs:
       - name: Install Dependencies
         run : |
           cd client
-          npm install dotenv
           yarn install
           npm install
       - name: Run Build App
