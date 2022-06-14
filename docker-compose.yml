@@ -9,7 +9,7 @@ services:
      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
     volumes:
       - ./mongod.conf:/etc/mongo/mongod.conf
-      -  mongodata:/data/db
+      #-  mongodata:/data/db
     ports:
       - "27017:27017"
 
@@ -31,10 +31,11 @@ services:
     restart: always
     environment:
       - TZ=UTC
+      - REACT_APP_HOST=${REACT_APP_HOST}
     ports:
       - "80:80"
     depends_on:
       - back-end
 
-volumes:
-  mongodata:
+#volumes:
+ # mongodata:
