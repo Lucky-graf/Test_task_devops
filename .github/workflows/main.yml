@@ -61,12 +61,7 @@ jobs:
         path: ${{ steps.npm-cache-dir.outputs.dir }}
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
-          ${{ runner.os }}-node-
-    - name: Create .env file
-      uses: ozaytsev86/create-env-file@v1    
-      with:
-        ENV_REACT_APP_HOST: ${{ secrets.SERVER_IP }}
-        
+          ${{ runner.os }}-node-        
     - name: Install Dependencies
       run : |
         cd server
@@ -110,7 +105,6 @@ jobs:
         uses: actions/setup-node@v3.3.0
         with:
           node-version: 14
-          
       - name: Get yarn cache directory path
         id: build-cache-yarn
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
@@ -123,10 +117,13 @@ jobs:
           key: build-cache-yarn-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
           restore-keys: |
             build-cache-yarn 
-                
+      - name: Create .env file
+        uses: ozaytsev86/create-env-file@v1    
+        with:
+          ENV_REACT_APP_HOST: ${{ secrets.SERVER_IP }}
       - name: Install Dependencies
         run : |
-          cp env /client/.env
+          cp ./env ./client/.env
           cd client
           yarn install
           npm install
