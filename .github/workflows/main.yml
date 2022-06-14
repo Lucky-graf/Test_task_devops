@@ -123,10 +123,11 @@ jobs:
         run : |
           cd client
           yarn install
+          npm install
       - name: Run Build App
         run : |
           cd client
-          yarn build
+          npm run build
       #Docker
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
