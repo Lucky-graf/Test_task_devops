@@ -137,7 +137,7 @@ jobs:
           ${{ secrets.DB_PASSWORD }} >> .env
           echo "" >> .env
           docker-compose up -d
-          rm -rf .env
+          #rm -rf .env
     
 
 
