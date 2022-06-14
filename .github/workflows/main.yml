@@ -130,10 +130,14 @@ jobs:
         envs:  DB_USER, DB_PASSWORD
         script: |
           cd ~/app/
-          export DB_USER=${{ secrets.DB_USER }}
-          export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-          export TE_ST="hello"
-          docker-compose -v
+          echo -n "DB_USER = " > .env
+          ${{ secrets.DB_USER }} >> .env
+          echo "" >> .env
+          echo -n "DB_PASSWORD = " >> .env
+          ${{ secrets.DB_PASSWORD }} >> .env
+          echo "" >> .env
+          docker-compose up -d
+          rm -rf .env
     
 
 
