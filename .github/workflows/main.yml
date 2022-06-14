@@ -108,7 +108,7 @@ jobs:
       run: |
         mkdir ./file
         ls -la
-        #cp docker-compose.yml ./file/
+        cp docker-compose.yml ./file/
         cp mongod.conf ./file/
         ls -la
     - name: SFTP Deploy
@@ -117,8 +117,8 @@ jobs:
         username: ${{ secrets.USER_NAME }}
         server: ${{ secrets.SERVER_IP }}
         ssh_private_key: ${{ secrets.SSH_PEM_KEY_AWS }}
-        local_path: /github/workspace/docker-compose.yml
-        remote_path: ~/
+        local_path: /github/workspace/file/
+        remote_path: ~/app/
         args: '-o ConnectTimeout=5'
         
     - name: Executing remote ssh commands using ssh-key
