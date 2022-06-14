@@ -104,15 +104,17 @@ jobs:
     steps:
     - name: Clone reppo GitHub
       uses: actions/checkout@v3  
+      
     - name: SFTP Deploy
       uses: wlixcc/SFTP-Deploy-Action@v1.2.2
       with:
         username: ${{ secrets.USER_NAME }}
         server: ${{ secrets.SERVER_IP }}
-        ssh_private_key: ${{ secrets.SSH_PRIVAT_KEY }}
+        ssh_private_key: ${{ secrets.SSH_PEM_KEY_AWS }}
         local_path: /github/workspace/docker-compose.yml
         remote_path: ~/app/
         args: '-o ConnectTimeout=5'
+        
     - name: Executing remote ssh commands using ssh-key
       uses: appleboy/ssh-action@master
       with: 
@@ -123,10 +125,9 @@ jobs:
         port: 22
         envs:  DB_USER, DB_PASSWORD
         script: |
-          whoami 
-          echo "I am $DB_USER"
-          curl ifconfig.me 
-          ls
+          export DB_USER=$DB_USER
+          export DB_PASSWORD=$DB_PASSWORD
+          export test=hello
     
 
 
