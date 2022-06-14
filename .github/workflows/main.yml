@@ -9,7 +9,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./client
@@ -27,10 +28,25 @@ jobs:
       - name: Run Testing
         run : npm test --watchAll=false
         
-  docker:
+  build-deploy-back:
     runs-on: ubuntu-latest
+    #if: github.ref == 'refs/heads/test'
+    if: ${{ !failure() }}
     needs: test
     steps:
+    - name: Clone reppo
+      uses: actions/checkout@v3
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v3.3.0
+      with:
+        node-version: 14
+    - name: Install Dependencies
+      run : |
+        npm install
+        yarn install
+    - name: Run Building
+      run : npm run build
+    # Docker
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
     - name: Set up Docker Buildx
@@ -47,13 +63,13 @@ jobs:
         push: true
         tags: bodya1601/todo:latest
         
-  build:
+  build-deploy-front:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/test'
+    needs: [build-deploy-back]
     if: ${{ !failure() }}
     env: 
       REACT_APP_HOST: ${{ secrets.SERVER_IP }}
-    needs: docker
     steps:
       - name: Clone reppo
         uses: actions/checkout@v3
@@ -63,17 +79,14 @@ jobs:
           node-version: 14
       - name: Install Dependencies
         run : |
-          ls
           cd client
-          ls
           yarn install
           npm install
-          ls
       - name: Run Build App
         run : |
           cd client
           npm run build
-          ls
+      #Docker
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -96,8 +109,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/test'
-    #if: ${{ !failure() }}
-    needs: build     
+    if: ${{ !failure() }}
+    needs: [build-deploy-back, build-deploy-front]     
     steps:
     - name: Clone reppo GitHub
       uses: actions/checkout@v3
