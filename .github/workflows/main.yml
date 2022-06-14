@@ -109,7 +109,7 @@ jobs:
       with:
         username: ${{ secrets.USER_NAME }}
         server: ${{ secrets.SERVER_IP }}
-        ssh_private_key: ${{ secrets.SSH_PRIVET_KEY }}
+        ssh_private_key: ${{ secrets.SSH_PRIVAT_KEY }}
         local_path: /github/workspace/docker-compose.yml
         remote_path: ~/app/
         args: '-o ConnectTimeout=5'
