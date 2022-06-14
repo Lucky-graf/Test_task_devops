@@ -39,7 +39,7 @@ jobs:
         
   build-deploy-back:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/test'
+    #if: github.ref == 'refs/heads/test'
     #if: ${{ !failure() }}
     needs: test
     steps:
