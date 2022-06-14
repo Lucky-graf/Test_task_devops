@@ -62,7 +62,7 @@ jobs:
 #        restore-keys: |
 #          ${{ runner.os }}-node-        
 
-- name: Install Dependencies
+    - name: Install Dependencies
       run : |
         cd server
         npm install
