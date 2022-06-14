@@ -62,7 +62,11 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
-      
+    - name: Create .env file
+      uses: ozaytsev86/create-env-file@v1    
+      with:
+        ENV_REACT_APP_HOST: ${{ secrets.SERVER_IP }}
+        
     - name: Install Dependencies
       run : |
         cd server
@@ -97,7 +101,8 @@ jobs:
     env: 
       DOCKER_BUILDKIT: 0
       COMPOSE_DOCKER_CLI_BUILD: 0
-      REACT_APP_HOST: ${{ secrets.SERVER_IP }}
+      #REACT_APP_HOST: ${{ secrets.SERVER_IP }}
+      file-name: env
     steps:
       - name: Clone reppo
         uses: actions/checkout@v3
@@ -121,6 +126,7 @@ jobs:
                 
       - name: Install Dependencies
         run : |
+          cp env /client/.env
           cd client
           yarn install
           npm install
