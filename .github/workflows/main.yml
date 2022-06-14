@@ -100,12 +100,18 @@ jobs:
     needs: build     
     steps:
     - name: Clone reppo GitHub
-      uses: actions/checkout@v3  
+      uses: actions/checkout@v3
+    - name: Create .env file
+      uses: ozaytsev86/create-env-file@v1
+      with:
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}    
     - name: Package file in one folder
       run: |
         mkdir ./file
         cp docker-compose.yml ./file/
         cp mongod.conf ./file/
+        cp .env ./file/
     - name: SFTP Deploy docker-compose.yml
       uses: wlixcc/SFTP-Deploy-Action@v1.2.2
       with:
