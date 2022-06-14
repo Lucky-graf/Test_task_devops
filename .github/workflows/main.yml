@@ -9,8 +9,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    #if: github.ref == 'refs/heads/test'
+    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./client
@@ -20,8 +20,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.3.0
         with:
-          node-version: 14
-      
+          node-version: 16
       - name: Get yarn cache directory path
         id: test-cache-yarn
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
@@ -41,7 +40,7 @@ jobs:
   build-deploy-back:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/test'
-    #if: ${{ !failure() }}
+    if: ${{ !failure() }}
     needs: test
     steps:
     - name: Clone reppo
@@ -49,7 +48,7 @@ jobs:
     - name: Setup Node.js environment
       uses: actions/setup-node@v3.3.0
       with:
-        node-version: 14
+        node-version: 16
     - name: Get npm cache directory
       id: npm-cache-dir
       run: |
@@ -116,7 +115,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.3.0
         with:
-          node-version: 14
+          node-version: 16
       - name: Get yarn cache directory path
         id: build-cache-yarn
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
