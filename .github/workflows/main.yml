@@ -100,6 +100,11 @@ jobs:
     steps:
       - name: Clone reppo
         uses: actions/checkout@v3
+      - name: Create .env file
+        uses: ozaytsev86/create-env-file@v1    
+        with:
+          ENV_REACT_APP_HOST: ${{ secrets.SERVER_IP }}
+          file-name: env        
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.3.0
         with:
@@ -115,12 +120,7 @@ jobs:
           path: ${{ steps.build-cache-yarn.outputs.dir }}
           key: build-cache-yarn-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
           restore-keys: |
-            build-cache-yarn 
-      - name: Create .env file
-        uses: ozaytsev86/create-env-file@v1    
-        with:
-          ENV_REACT_APP_HOST: ${{ secrets.SERVER_IP }}
-          file-name: env
+            build-cache-yarn           
       - name: Install Dependencies
         run : |
           cp ./env ./client/.env
