@@ -138,7 +138,7 @@ jobs:
           ls -la
           docker-compose down
           docker-compose up -d
-          rm -rf .env
+          #rm -rf .env
     
 
 
