@@ -97,11 +97,7 @@ jobs:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/test'
     if: ${{ !failure() }}
-    needs: build
-    env:
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      
+    needs: build     
     steps:
     - name: Clone reppo GitHub
       uses: actions/checkout@v3  
@@ -110,7 +106,6 @@ jobs:
         mkdir ./file
         cp docker-compose.yml ./file/
         cp mongod.conf ./file/
-        
     - name: SFTP Deploy docker-compose.yml
       uses: wlixcc/SFTP-Deploy-Action@v1.2.2
       with:
@@ -123,6 +118,9 @@ jobs:
         
     - name: Executing remote ssh commands using ssh-key
       uses: appleboy/ssh-action@master
+      env:
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       with: 
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.USER_NAME }}
@@ -131,9 +129,9 @@ jobs:
         port: 22
         envs:  DB_USER, DB_PASSWORD
         script: |
-          export DB_USER=$DB_USER
-          export DB_PASSWORD=$DB_PASSWORD
-          export test=hello
+          export DB_USER="$DB_USER"
+          export DB_PASSWORD="$DB_PASSWORD"
+          export TE_ST="hello"
     
 
 
