@@ -9,8 +9,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    #if: github.ref == 'refs/heads/test'
+    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./client
@@ -40,7 +40,7 @@ jobs:
         
   build-deploy-back:
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/test'
+    if: github.ref == 'refs/heads/test'
     #if: ${{ !failure() }}
     needs: test
     steps:
@@ -123,7 +123,8 @@ jobs:
             build-cache-yarn           
       - name: Install Dependencies
         run : |
-          cp ./env ./client/.env
+          ls -la
+          cp env /client/.env
           cd client
           yarn install
           npm install
