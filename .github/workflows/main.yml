@@ -27,7 +27,7 @@ jobs:
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
       - name: Restore yarn cache  
         uses: actions/cache@v2
-        id: yarn-cache 
+        id: cache-yarn 
         with:
           path: ${{ steps.test-cache-yarn.outputs.dir }}
           key: test-cache-yarn-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
@@ -50,6 +50,19 @@ jobs:
       uses: actions/setup-node@v3.3.0
       with:
         node-version: 14
+    - name: Get npm cache directory
+      id: npm-cache-dir
+      run: |
+        echo "::set-output name=dir::$(npm config get cache)"
+    - uses: actions/cache@v3
+      id: npm-cache 
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+      with:
+        path: ${{ steps.npm-cache-dir.outputs.dir }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+      
     - name: Install Dependencies
       run : |
         cd server
@@ -82,6 +95,8 @@ jobs:
     needs: [build-deploy-back]
     #if: ${{ !failure() }}
     env: 
+      DOCKER_BUILDKIT: 0
+      COMPOSE_DOCKER_CLI_BUILD: 0
       REACT_APP_HOST: ${{ secrets.SERVER_IP }}
     steps:
       - name: Clone reppo
@@ -90,6 +105,20 @@ jobs:
         uses: actions/setup-node@v3.3.0
         with:
           node-version: 14
+          
+      - name: Get yarn cache directory path
+        id: build-cache-yarn
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      - name: Restore yarn cache
+        uses: actions/cache@v2
+        id: yarn-cache 
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.build-cache-yarn.outputs.dir }}
+          key: build-cache-yarn-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
+          restore-keys: |
+            build-cache-yarn 
+                
       - name: Install Dependencies
         run : |
           cd client
