@@ -106,15 +106,13 @@ jobs:
       with:
         ENV_DB_USER: ${{ secrets.DB_USER }}
         ENV_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}    
-        file-name: .env
+        file-name: env
     - name: Package file in one folder
       run: |
-        ls -la
         mkdir ./file
         cp docker-compose.yml ./file/
         cp mongod.conf ./file/
-        cat .env
-        cp .env ./file/
+        cp env ./file/
         ls -la ./file/
     - name: SFTP Deploy docker-compose.yml
       uses: wlixcc/SFTP-Deploy-Action@v1.2.2
@@ -136,9 +134,10 @@ jobs:
         port: 22
         script: |
           cd ~/app/
+          cp env .env
           ls -la
-          #docker-compose down
-          #docker-compose up -d
+          docker-compose down
+          docker-compose up -d
           #rm -rf .env
     
 
