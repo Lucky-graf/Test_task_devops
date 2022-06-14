@@ -9,8 +9,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/master'
-    if: github.ref == 'refs/heads/test'
+    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./client
@@ -40,7 +40,7 @@ jobs:
         
   build-deploy-back:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/test'
+    #if: github.ref == 'refs/heads/test'
     #if: ${{ !failure() }}
     needs: test
     steps:
@@ -92,7 +92,7 @@ jobs:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/test'
     needs: [build-deploy-back]
-    if: ${{ !failure() }}
+    #if: ${{ !failure() }}
     env: 
       DOCKER_BUILDKIT: 0
       COMPOSE_DOCKER_CLI_BUILD: 0
@@ -105,6 +105,10 @@ jobs:
         with:
           ENV_REACT_APP_HOST: ${{ secrets.SERVER_IP }}
           file-name: env        
+      - name: Linkid enviroment file
+        run : |
+          cd client
+          ln -s ../env .env
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.3.0
         with:
@@ -124,7 +128,7 @@ jobs:
       - name: Install Dependencies
         run : |
           cd client
-          ln -s ../env .env
+          npm install dotenv
           yarn install
           npm install
       - name: Run Build App
