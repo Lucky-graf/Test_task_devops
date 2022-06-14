@@ -24,7 +24,7 @@ services:
     working_dir: /app
     ports:
       - "4000:4000"
-    entrypoint: node app.js
+    entrypoint: npm start
 
   front-end:
     image: bodya1601/todo-front:latest
