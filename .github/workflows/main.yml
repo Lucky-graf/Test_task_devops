@@ -104,10 +104,11 @@ jobs:
     - name: Create .env file
       uses: ozaytsev86/create-env-file@v1
       with:
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}    
+        ENV_DB_USER: ${{ secrets.DB_USER }}
+        ENV_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}    
     - name: Package file in one folder
       run: |
+        ls -la
         mkdir ./file
         cp docker-compose.yml ./file/
         cp mongod.conf ./file/
@@ -132,7 +133,8 @@ jobs:
         port: 22
         script: |
           cd ~/app/
-          docker-compose up -d
+          #docker-compose down
+          #docker-compose up -d
           #rm -rf .env
     
 
