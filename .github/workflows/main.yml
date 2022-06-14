@@ -9,7 +9,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/test'
+    if: github.ref == 'refs/heads/master'
     defaults:
       run:
         working-directory: ./client
@@ -49,8 +49,8 @@ jobs:
         
   build:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/test'
-    #if: ${{ !failure() }}
+    #if: github.ref == 'refs/heads/test'
+    if: ${{ !failure() }}
     env: 
       REACT_APP_HOST: ${{ secrets.SERVER_IP }}
     needs: docker
@@ -96,7 +96,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/test'
-    if: ${{ !failure() }}
+    #if: ${{ !failure() }}
     needs: build     
     steps:
     - name: Clone reppo GitHub
