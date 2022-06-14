@@ -42,10 +42,13 @@ jobs:
         node-version: 14
     - name: Install Dependencies
       run : |
-        npm install
+        cd server
         yarn install
-    - name: Run Building
-      run : npm run build
+        npm install
+    - name: Run Build App
+      run : |
+        cd server
+        npm run build
     # Docker
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
@@ -59,6 +62,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
+        context: .
         file: Dockerfile.back
         push: true
         tags: bodya1601/todo:latest
