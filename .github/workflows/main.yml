@@ -9,8 +9,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    #if: github.ref == 'refs/heads/test'
+    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./client
@@ -90,7 +90,7 @@ jobs:
   build-deploy-front:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/test'
-    needs: [build-deploy-back]
+    needs: [test]
     #if: ${{ !failure() }}
     env: 
       DOCKER_BUILDKIT: 0
