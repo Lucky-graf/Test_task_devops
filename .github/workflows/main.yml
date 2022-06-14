@@ -123,10 +123,7 @@ jobs:
             build-cache-yarn           
       - name: Install Dependencies
         run : |
-          ls -la
-          ls -la client
           cd client
-          ls -la ../
           ln -s ../env .env
           yarn install
           npm install
