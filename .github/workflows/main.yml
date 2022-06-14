@@ -1,80 +1,79 @@
-name: CI_CD
-on:
-  push:
-    branches: [reserve-brench, master]
-  workflow_dispatch:
+name   : CI_CD
+on     :
+  push :
+    branches        : [reserve-brench, master]
+  workflow_dispatch :
       
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/master'
-    if: github.ref == 'refs/heads/test'
-    defaults:
-      run:
-        working-directory: ./client
-    steps:
-      - name: Clone reppo
-        uses: actions/checkout@v3
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3.3.0
-        with:
-          node-version: 16
+jobs         :
+  test       :
+    runs-on  : ubuntu-latest
+    #if      : github.ref == 'refs/heads/master'
+    if       : github.ref == 'refs/heads/test'
+    defaults :
+      run    :
+        working-directory : ./client
+    steps    :
+      - name : Clone reppo
+        uses : actions/checkout@v3
+      - name : Setup Node.js environment
+        uses : actions/setup-node@v3.3.0
+        with :
+          node-version : 16
       # tacke cache dependence
-      - name: Get yarn cache directory path
-        id  : test-cache-yarn
-        run : echo "::set-output name=dir::$(yarn config get cacheFolder)"
-      - name: Restore yarn cache  
-        uses: actions/cache@v2
-        id  : cache-yarn 
+      - name : Get yarn cache directory path
+        id   : test-cache-yarn
+        run  : echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      - name : Restore yarn cache  
+        uses : actions/cache@v2
+        id   : cache-yarn 
         with   :
           path : ${{ steps.test-cache-yarn.outputs.dir }}
           key  : test-cache-yarn-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
-          restore-keys: test-cache-yarn    
-      - name: Install Dependencies
-        run : |
-          yarn install
-      - name: Run Testing
-        run : yarn test --watchAll=false
+          restore-keys : test-cache-yarn    
+      - name : Install Dependencies
+        run  : yarn install
+      - name : Run Testing
+        run  : yarn test --watchAll=false
         
-  build-deploy-back:
-    runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/test'
-    if: ${{ !failure() }}
-    needs: test
-    steps:
-    - name: Clone reppo
-      uses: actions/checkout@v3
+  build-deploy-back :
+    runs-on : ubuntu-latest
+    #if     : github.ref == 'refs/heads/test'
+    if      : ${{ !failure() }}
+    needs   : test
+    steps   :
+    - name  : Clone reppo
+      uses  : actions/checkout@v3
       
     # Docker
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-    - name: Login to DockerHub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_TOKEN }}
-    - name: Build and push
-      uses: docker/build-push-action@v3
-      with:
-        context: .
-        file: Dockerfile.back
-        push: true
-        tags: bodya1601/todo:latest
+    - name : Set up QEMU
+      uses : docker/setup-qemu-action@v2
+    - name : Set up Docker Buildx
+      uses : docker/setup-buildx-action@v2
+    - name : Login to DockerHub
+      uses : docker/login-action@v2
+      with :
+        username : ${{ secrets.DOCKER_HUB_USERNAME }}
+        password : ${{ secrets.DOCKER_HUB_TOKEN }}
+    - name : Build and push
+      uses : docker/build-push-action@v3
+      with :
+        context : .
+        file    : Dockerfile.back
+        push    : true
+        tags     : bodya1601/todo:latest
         
-  build-deploy-front:
-    runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/test'
-    needs: [test]
-    if: ${{ !failure() }}
-    env: 
-      DOCKER_BUILDKIT: 0
-      COMPOSE_DOCKER_CLI_BUILD: 0
-      REACT_APP_HOST: ${{ secrets.SERVER_IP }}
-    steps:
-      - name: Clone reppo
+  build-deploy-front :
+    runs-on : ubuntu-latest
+    #if     : github.ref == 'refs/heads/test'
+    needs   : [test]
+    if      : ${{ !failure() }}
+    env     : 
+      DOCKER_BUILDKIT          : 0
+      COMPOSE_DOCKER_CLI_BUILD : 0
+      REACT_APP_HOST           : ${{ secrets.SERVER_IP }}
+    steps :
+      - name : Clone reppo
         uses: actions/checkout@v3       
           
       - name: Setup Node.js environment
