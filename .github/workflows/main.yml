@@ -118,7 +118,7 @@ jobs:
         server: ${{ secrets.SERVER_IP }}
         ssh_private_key: ${{ secrets.SSH_PEM_KEY_AWS }}
         local_path: /github/workspace/file/*
-        remote_path: ~/app/
+        remote_path: app
         args: '-o ConnectTimeout=5'
         
     - name: Executing remote ssh commands using ssh-key
