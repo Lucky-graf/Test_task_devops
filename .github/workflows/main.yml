@@ -22,6 +22,7 @@ jobs:
         with:
           node-version: 14
           cache: yarn
+          if: steps.yarn-cache.outputs.cache-hit != 'true'
       - name: Install Dependencies
         run : |
           yarn install
