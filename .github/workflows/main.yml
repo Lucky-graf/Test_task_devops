@@ -6,11 +6,10 @@ on:
       
 
 jobs:
-
   test:
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/master'
-    if: github.ref == 'refs/heads/test'
+    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./client
@@ -97,19 +96,7 @@ jobs:
       REACT_APP_HOST: ${{ secrets.SERVER_IP }}
     steps:
       - name: Clone reppo
-        uses: actions/checkout@v3
-        
-        
-#      - name: Create .env file
-#        uses: ozaytsev86/create-env-file@v1    
-#        with:
-#          ENV_REACT_APP_HOST: ${{ secrets.SERVER_IP }}
-#          file-name: env        
-#      - name: Linkid enviroment file
-#        run : |
-#          cd client
-#          ln -s ../env .env
-          
+        uses: actions/checkout@v3       
           
 #      - name: Setup Node.js environment
 #        uses: actions/setup-node@v3.3.0
@@ -151,14 +138,12 @@ jobs:
           context: .
           file: Dockerfile.front
           push: true
-          tags: bodya1601/todo-front:latest
-
-        
+          tags: bodya1601/todo-front:latest   
         
   deploy:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/test'
-    if: ${{ !failure() }}
+    #if: ${{ !failure() }}
     needs: [build-deploy-back, build-deploy-front]     
     steps:
     - name: Clone reppo GitHub
@@ -196,10 +181,11 @@ jobs:
         script: |
           cd ~/app/
           mv env .env
-          ls -la
           docker-compose down
-          docker-compose up -d
-          #rm -rf .env
+          docker rmi bodya1601/todo:latest
+          docker rmi bodya1601/todo-front:latest
+          docker-compose up -d --build
+          rm -rf .env
     
 
 
