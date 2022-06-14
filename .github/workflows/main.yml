@@ -102,8 +102,9 @@ jobs:
     - name: Clone reppo GitHub
       uses: actions/checkout@v3
     - name: Create .env file
-      uses: ozaytsev86/create-env-file@v1
+      uses: ozaytsev86/create-env-file@v1    
       with:
+        file-name: .env
         ENV_DB_USER: ${{ secrets.DB_USER }}
         ENV_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}    
     - name: Package file in one folder
