@@ -100,6 +100,8 @@ jobs:
     steps:
       - name: Clone reppo
         uses: actions/checkout@v3
+        
+        
       - name: Create .env file
         uses: ozaytsev86/create-env-file@v1    
         with:
@@ -109,6 +111,8 @@ jobs:
         run : |
           cd client
           ln -s ../env .env
+          
+          
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.3.0
         with:
@@ -128,8 +132,8 @@ jobs:
       - name: Install Dependencies
         run : |
           cd client
-          yarn install
           npm install
+          yarn install
       - name: Run Build App
         run : |
           cd client
