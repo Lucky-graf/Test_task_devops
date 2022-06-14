@@ -9,7 +9,7 @@ services:
      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
     volumes:
       - ./mongod.conf:/etc/mongo/mongod.conf
-      #-  mongodata:/data/db
+      -  mongodata:/data/db
     ports:
       - "27017:27017"
 
@@ -37,5 +37,5 @@ services:
     depends_on:
       - back-end
 
-#volumes:
- # mongodata:
+volumes:
+  mongodata:
