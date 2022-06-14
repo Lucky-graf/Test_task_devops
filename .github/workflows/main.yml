@@ -101,23 +101,23 @@ jobs:
     env:
       DB_USER: ${{ secrets.DB_USER }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      
     steps:
     - name: Clone reppo GitHub
       uses: actions/checkout@v3  
     - name: Package file in one folder
       run: |
         mkdir ./file
-        ls -la
         cp docker-compose.yml ./file/
         cp mongod.conf ./file/
-        ls -la
-    - name: SFTP Deploy
+        
+    - name: SFTP Deploy docker-compose.yml
       uses: wlixcc/SFTP-Deploy-Action@v1.2.2
       with:
         username: ${{ secrets.USER_NAME }}
         server: ${{ secrets.SERVER_IP }}
         ssh_private_key: ${{ secrets.SSH_PEM_KEY_AWS }}
-        local_path: /github/workspace/file/
+        local_path: /github/workspace/file/*
         remote_path: ~/app/
         args: '-o ConnectTimeout=5'
         
