@@ -128,15 +128,13 @@ jobs:
 #          restore-keys: |
 #            build-cache-yarn           
      
-      - name: Install Dependencies
+      - name: Install Dependencies AND Run Build App
         run : |
           cd client
           npm install
           yarn install
-      - name: Run Build App
-        run : |
-          cd client
           npm run build
+          
       #Docker
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
