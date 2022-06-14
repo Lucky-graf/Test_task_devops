@@ -105,7 +105,8 @@ jobs:
       uses: ozaytsev86/create-env-file@v1    
       with:
         ENV_DB_USER: ${{ secrets.DB_USER }}
-        ENV_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}    
+        ENV_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}   
+        ENV_REACT_APP_HOST: ${{ secrets.SERVER_IP }}
         file-name: env
     - name: Package file in one folder
       run: |
@@ -113,7 +114,6 @@ jobs:
         cp docker-compose.yml ./file/
         cp mongod.conf ./file/
         cp env ./file/
-        ls -la ./file/
     - name: SFTP Deploy docker-compose.yml
       uses: wlixcc/SFTP-Deploy-Action@v1.2.2
       with:
@@ -134,11 +134,11 @@ jobs:
         port: 22
         script: |
           cd ~/app/
-          cp env .env
+          mv env .env
           ls -la
           docker-compose down
           docker-compose up -d
-          #rm -rf .env
+          rm -rf .env
     
 
 
