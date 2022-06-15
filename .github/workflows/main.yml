@@ -8,8 +8,8 @@ on     :
 jobs         :
   test       :
     runs-on  : ubuntu-latest
-    #if      : github.ref == 'refs/heads/master'
-    if       : github.ref == 'refs/heads/test'
+    if      : github.ref == 'refs/heads/master'
+    #if       : github.ref == 'refs/heads/test'
     defaults :
       run    :
         working-directory : ./client
@@ -121,7 +121,7 @@ jobs         :
   deploy :
     runs-on : ubuntu-latest
     #if     : github.ref == 'refs/heads/test'
-    #if     : ${{ !failure() }}
+    if     : ${{ !failure() }}
     needs   : [build-deploy-back, build-deploy-front]     
     steps   :
     - name  : Clone reppo GitHub
