@@ -1,4 +1,4 @@
-ame: CI_CD
+name: CI_CD
 on:
   push:
     branches: [reserve-brench, master]
