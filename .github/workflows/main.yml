@@ -163,7 +163,7 @@ jobs         :
           docker rmi bodya1601/todo:latest
           docker rmi bodya1601/todo-front:latest
           docker-compose up -d --build
-          rm -rf .env
+          #rm -rf .env
 
 
         
