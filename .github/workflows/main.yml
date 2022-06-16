@@ -7,8 +7,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/master'
-    if: github.ref == 'refs/heads/test'
+    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./client
@@ -19,16 +19,20 @@ jobs:
         uses: actions/setup-node@v3.3.0
         with:
           node-version: 16
+      # save dependence in cache
       - name: Get yarn cache directory path
-        id: test-cache-yarn
+        id: build-cache-yarn
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-      - name: Restore yarn cache  
+      - name: Restore yarn cache
         uses: actions/cache@v2
-        id: cache-yarn 
+        id: yarn-cache 
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         with:
-          path: ${{ steps.test-cache-yarn.outputs.dir }}
-          key: test-cache-yarn-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
-          restore-keys: test-cache-yarn    
+          path: ${{ steps.build-cache-yarn.outputs.dir }}
+          key: build-cache-yarn-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
+          restore-keys: |
+            build-cache-yarn    
+            
       - name: Install Dependencies
         run : |
           yarn install
@@ -43,7 +47,6 @@ jobs:
     steps:
     - name: Clone reppo
       uses: actions/checkout@v3
-
     # Docker
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
