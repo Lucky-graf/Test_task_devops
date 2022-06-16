@@ -1,4 +1,4 @@
-name: CI_CD
+ame: CI_CD
 on:
   push:
     branches: [reserve-brench, master]
@@ -7,8 +7,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    #if: github.ref == 'refs/heads/test'
+    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./client
@@ -43,52 +43,8 @@ jobs:
     steps:
     - name: Clone reppo
       uses: actions/checkout@v3
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v3.3.0
-      with:
-        node-version: 16
-    - name: Get npm cache directory
-      id: npm-cache-dir
-      run: |
-        echo "::set-output name=dir::$(npm config get cache)"
-    - uses: actions/cache@v3
-      id: npm-cache 
-      if: steps.npm-cache.outputs.cache-hit != 'true'
-      with:
-        path: ${{ steps.npm-cache-dir.outputs.dir }}
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-        
-    - name: Install Dependencies AND Run Build App
-      run : |
-    - name: Clone reppo
-      uses: actions/checkout@v3       
 
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v3.3.0
-      with:
-        node-version: 16
-    - name: Get yarn cache directory path
-      id: build-cache-yarn
-      run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-    - name: Restore yarn cache
-      uses: actions/cache@v2
-      id: yarn-cache 
-      if: steps.yarn-cache.outputs.cache-hit != 'true'
-      with:
-        path: ${{ steps.build-cache-yarn.outputs.dir }}
-        key: build-cache-yarn-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
-        restore-keys: |
-          build-cache-yarn           
-
-    - name: Install Dependencies AND Run Build App
-      run : |
-        cd client
-        npm install
-        yarn install
-        npm run build
-          
-    #Docker
+    # Docker
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
     - name: Set up Docker Buildx
@@ -102,9 +58,60 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: .
-        file: Dockerfile.front
+        file: Dockerfile.back
         push: true
-        tags: bodya1601/todo-front:latest   
+        tags: bodya1601/todo:latest
+        
+  build-deploy-front:
+    runs-on: ubuntu-latest
+    #if: github.ref == 'refs/heads/test'
+    needs: [test]
+    if: ${{ !failure() }}
+    env: 
+      DOCKER_BUILDKIT: 0
+      COMPOSE_DOCKER_CLI_BUILD: 0
+      REACT_APP_HOST: ${{ secrets.SERVER_IP }}
+    steps:
+      - name: Clone reppo
+        uses: actions/checkout@v3       
+          
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.3.0
+        with:
+          node-version: 16
+      # tacke cache dependence
+      - name: Get yarn cache directory path
+        id: build-cache-yarn
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+	@@ -114,7 +93,7 @@ jobs:
+          key: build-cache-yarn-${{ hashFiles('**/yarn.lock', '.yarnrc.yml') }}
+          restore-keys: |
+            build-cache-yarn           
+      # install dependence
+      - name: Install Dependencies AND Run Build App
+        run : |
+          cd client
+          npm install
+          yarn install
+          npm run build
+          
+      #Docker
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: Dockerfile.front
+          push: true
+          tags: bodya1601/todo-front:latest   
         
   deploy:
     runs-on: ubuntu-latest
@@ -144,12 +151,3 @@ jobs:
         username: ${{ secrets.USER_NAME }}
         key: ${{ secrets.SSH_PIVATE_KEY }}
         port: 22
-        script: |
-          cd ~/app/
-          mv env .env
-          docker-compose down
-          docker rmi bodya1601/todo:latest
-          docker rmi bodya1601/todo-front:latest
-          docker-compose up -d --build
-          rm -rf .env
-    
