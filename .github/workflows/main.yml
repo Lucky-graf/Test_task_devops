@@ -7,8 +7,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    #if: github.ref == 'refs/heads/test'#
+    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./client
@@ -41,8 +41,8 @@ jobs:
         
   build-deploy-back:
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/test'
-    if: ${{ !failure() }}
+    if: github.ref == 'refs/heads/test'
+    #if: ${{ !failure() }}
     needs: test
     steps:
     - name: Clone reppo
@@ -67,9 +67,9 @@ jobs:
         
   build-deploy-front:
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/test'
-    needs: [test]
-    if: ${{ !failure() }}
+    if: github.ref == 'refs/heads/test'
+    needs: test
+    #if: ${{ !failure() }}
     env: 
       DOCKER_BUILDKIT: 0
       COMPOSE_DOCKER_CLI_BUILD: 0
