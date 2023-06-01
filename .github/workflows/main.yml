@@ -73,8 +73,8 @@ jobs:
     env: 
       DOCKER_BUILDKIT: 0
       COMPOSE_DOCKER_CLI_BUILD: 0
-      REACT_APP_HOST: ${{ secrets.SERVER_IP }}
-      REACT_APP_PROTOCOL: ${{ secrets.PROTOCOL }}
+      REACT_APP_HOST: ${{ vars.DOMAIN_API }}
+      REACT_APP_PROTOCOL: ${{ vars.PROTOCOL }}
     steps:
       - name: Clone reppo
         uses: actions/checkout@v3       
@@ -133,9 +133,9 @@ jobs:
     - name: Create .env file
       uses: ozaytsev86/create-env-file@v1    
       with:
-        ENV_REACT_APP_HOST: ${{ secrets.SERVER_IP }}
+        ENV_REACT_APP_HOST: ${{ vars.DOMAIN_API }}
         ENV_DB_USER: ${{ secrets.DB_USER }}
-        ENV_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}   
+        ENV_DB_PASSWORD: ${{ .DB_PASSWORD }}   
         file-name: env
     - name: Package file in one folder
       run: |
