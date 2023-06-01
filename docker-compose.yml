@@ -34,7 +34,7 @@ services:
       - TZ=UTC
       - REACT_APP_HOST=${REACT_APP_HOST}
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - back-end
 
