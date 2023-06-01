@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 require('dotenv').config()
-
-const baseUrl = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOST}:4000`
+const port = ${process.env.REACT_APP_PROTOCOL} === "https" ? "" : ":4000";
+const baseUrl = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOST}${port}`
 
 export const getTodos = async (): Promise<AxiosResponse<ApiDataType>> => {
   try {
