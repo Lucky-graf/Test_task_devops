@@ -135,7 +135,7 @@ jobs:
       with:
         ENV_REACT_APP_HOST: ${{ vars.DOMAIN_API }}
         ENV_DB_USER: ${{ secrets.DB_USER }}
-        ENV_DB_PASSWORD: ${{ .DB_PASSWORD }}   
+        ENV_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}   
         file-name: env
     - name: Package file in one folder
       run: |
